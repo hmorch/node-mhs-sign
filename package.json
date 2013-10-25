@@ -1,0 +1,27 @@
+{
+  "name": "mhs-sign",
+  "description": "Calculates Amazon AWS-style Authorization header for MapHub Servicee REST requests",
+  "version": "0.0.1",
+  "author": {
+    "name": "Oliver Fink",
+    "email": "me@egorfine.com"
+  },
+  "homepage": "https://github.com/ofink-nokia/node-mhs-sign",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ofink-nokia/node-mhs-sign.git"
+  },
+  "devDependencies": {
+    "nodeunit": ">= 0.6.0"
+  },
+  "readme": "# node-mhs-sign\r\n\r\nSimple module to calculate `Authorization` header for Amazon AWS-style MapHub Service REST requests.\r\n\r\nSimple it is: \r\n\t\r\n```javascript\r\nvar AwsSign = require('mhs-sign');\r\nvar signer = new AwsSign({ \r\n\taccessKeyId: 'AKIAIOSFODNN7EXAMPLE',\r\n\tsecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'\r\n});\r\n\r\nvar opts = {\r\n\tmethod: 'PUT',\r\n\thost: 'johnsmith.s3.amazonaws.com',\r\n\tpath: '/photos/puppy.jpg',\r\n\theaders: { ... },\r\n\t... // Other request options, ignored by AwsSign.\r\n};\r\nsigner.sign(opts);\r\nhttps.request(opts, ...);\r\n```\r\n\r\nThe following keys are mandatory: \r\n\r\n* `method`\r\n* `host`\r\n* `path`\r\n\r\nOthers are optional. A date header (`headers.date`) will be added for you if it is not already set.\r\n\r\n## Non-goals\r\n\r\nNode.js has no legacy ;-) so there is no need to support some legacy features of Amazon API for older software. I.e. there is no support for path-style bucket access.\r\n\r\n`x-amz-date` substitution is not supported because Node's http module has no problems setting `Date` header.\r\n\r\nMultiple `x-amz-` keys are not supported. I.e. the following part of the example won't work: \r\n\r\n\tX-Amz-Meta-ReviewedBy: joe@johnsmith.net\r\n\tX-Amz-Meta-ReviewedBy: jane@johnsmith.net\r\n\r\nUse a single header instead: \r\n\r\n\tX-Amz-Meta-ReviewedBy: joe@johnsmith.net,jane@johnsmith.net\r\n\r\n## 0.0.x to 0.1.x migration guide\r\n\r\n0.1.x supports the same options as http.request (thanks to Ben Trask). \r\n\r\nBefore:\r\n\r\n```javascript\r\n\tauth = signer.sign({\r\n\t\tmethod: 'PUT', \r\n\t\tbucket: 'johnsmith', \r\n\t\tpath: '/photos/puppy.jpg', \r\n\t\tdate: 'Tue, 27 Mar 2007 21:15:45 +0000', \r\n\t\tcontentType: 'image/jpeg'\r\n\t});\r\n\thttp.request({\r\n\t\t…\r\n\t\theaders: {\r\n\t\t\t…,\r\n\t\t\tAuthorization: auth\r\n\t\t}\r\n\t});\r\n```\r\n\r\nAfter: \r\n\r\n```javascript\r\n\tvar opts = {\r\n\t\tmethod: 'PUT', \r\n\t\thost: 'johnsmith.s3.amazonaws.com',\r\n\t\tpath: '/photos/puppy.jpg', \r\n\t\theaders: {\r\n\t\t\tdate: 'Tue, 27 Mar 2007 21:15:45 +0000', \r\n\t\t\tcontentType: 'image/jpeg'\r\n\t\t}\r\n\t};\r\n\tsigner.sign(opts);\r\n\thttp.request(opts);\r\n```\r\n\r\n\r\n## Testing\r\n\r\n\tnodeunit test/\r\n\t\r\n## Installation\r\n\r\n\tnpm install mhs-sign\r\n\r\n## Author\r\n\r\nEgor Egorov, me@egorfine.com.\r\n\r\n## License\r\n\r\nMIT.\r\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/egorFiNE/node-mhs-sign/issues"
+  },
+  "_id": "mhs-mhs-sign@0.0.1",
+  "dist": {
+    "shasum": "89ff59c3f7733ff2e3e00b4e97832c6b37c15d36"
+  },
+  "_from": "C:\\Users\\olifink\\Documents\\GitHub\\node-mhs-sign"
+}
