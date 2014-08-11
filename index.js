@@ -129,6 +129,9 @@ MHSRestSigner.prototype.sign = function(opts) {
 
 MHSRestSigner.prototype._sign = function(method, bucket, path, date, contentType, contentMd5, xAmzHeaders) {
 	var qPos = path.indexOf('?'), queryToSign='';
+    if(qPos < 0) {
+      qPos = path.indexOf(';')
+    }
 	if (qPos>=0) {
 		var queryPart = path.substr(qPos+1, path.length);
 		path = path.substr(0,qPos);
