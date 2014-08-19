@@ -1,5 +1,5 @@
 {
-  "name": "node-mhs-sign",
+  "name": "mhs-sign",
   "description": "Calculates Amazon AWS-style Authorization header for MapHub Servicee REST requests",
   "version": "0.0.1",
   "author": {
