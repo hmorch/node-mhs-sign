@@ -40,7 +40,7 @@ MHSRestSigner.prototype.canonizeAwzHeaders = function(xAmzHeaders) {
 	} else { 
 		return '';
 	}
-}
+};
 
 MHSRestSigner.prototype.extractSubResources = function(queryString) {
 	var query = querystring.parse(queryString);
@@ -61,11 +61,11 @@ MHSRestSigner.prototype.extractSubResources = function(queryString) {
 			}
 			return result;
 		});
-		return "?"+queryToSign.join("&")
+		return "?"+queryToSign.join("&");
 	}
 
 	return '';
-}
+};
 
 MHSRestSigner.prototype.sign = function(opts) {
 	var
@@ -124,14 +124,13 @@ MHSRestSigner.prototype.sign = function(opts) {
 	}
 	
 	opts.headers["Authorization"] = this._sign(method, bucket, path, date, contentType, contentMd5, xAmzHeaders);
-}
+};
 
 
 MHSRestSigner.prototype._sign = function(method, bucket, path, date, contentType, contentMd5, xAmzHeaders) {
-	var qPos = path.indexOf('?'), queryToSign='';
-    if(qPos < 0) {
-      qPos = path.indexOf(';')
-    }
+  path = path.replace(/;[^\/]*/g, "");    //remove matrix params
+
+  var qPos = path.indexOf('?'), queryToSign='';
 	if (qPos>=0) {
 		var queryPart = path.substr(qPos+1, path.length);
 		path = path.substr(0,qPos);
@@ -163,13 +162,13 @@ MHSRestSigner.prototype._sign = function(method, bucket, path, date, contentType
 		canonicalizedResource;
 
 	if (this.debug) { 
-		console.log("-----------")
+		console.log("-----------");
 		console.log(stringToSign.replace(/\n/g, "\\n\n"));
-		console.log("-----------")
+		console.log("-----------");
 	}
 
 	return 'AWS ' + this.accessKeyId + ':' + crypto.createHmac('sha1', this.secretAccessKey).update(stringToSign).digest('base64'); 
-}
+};
 
 module.exports = MHSRestSigner;
 
