@@ -67,7 +67,18 @@ MHSRestSigner.prototype.extractSubResources = function(queryString) {
 	return '';
 };
 
-MHSRestSigner.prototype.sign = function(opts) {
+MHSRestSigner.prototype.sign = function(opts, body) {
+  if (body) {
+    if (typeof body === "string") body = new Buffer(body);
+    
+    var md5 = crypto.createHash("md5");
+    md5.update(body, "utf8");
+    md5 = md5.digest("base64");
+    
+    opts['content-md5'] = md5;
+    opts['content-length'] = body.length;
+  }
+  
 	var
 		method = opts.method,
 		host = opts.host || '',
