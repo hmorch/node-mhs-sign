@@ -12,7 +12,13 @@ var
 
 function MHSRestSigner(credentials) {
 	this.accessKeyId = credentials.accessKeyId; 
-	this.secretAccessKey = credentials.secretAccessKey; 
+	this.secretAccessKey = credentials.secretAccessKey;
+	if (!this.accessKeyId) {
+	  throw new Error("AccessKeyId is mandatory but empty");
+	}
+  if (!this.secretAccessKey) {
+    throw new Error("SecretAccessKey is mandatory but empty");
+  }
 	this.debug = true;
 }
 
@@ -67,7 +73,18 @@ MHSRestSigner.prototype.extractSubResources = function(queryString) {
 	return '';
 };
 
-MHSRestSigner.prototype.sign = function(opts) {
+MHSRestSigner.prototype.sign = function(opts, body) {
+  if (body) {
+    if (typeof body === "string") body = new Buffer(body);
+    
+    var md5 = crypto.createHash("md5");
+    md5.update(body, "utf8");
+    md5 = md5.digest("base64");
+    
+    opts['content-md5'] = md5;
+    opts['content-length'] = body.length;
+  }
+  
 	var
 		method = opts.method,
 		host = opts.host || '',
@@ -78,7 +95,7 @@ MHSRestSigner.prototype.sign = function(opts) {
 
     if(path.indexOf("/maphub-service") == 0) {
         path = path.substring(15);
-        console.log(path);
+        if (this.debug) console.log(path);
     }
 
 //	var _match = host.match(/^(.*)\.s3\.amazonaws\.com/);
