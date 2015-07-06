@@ -81,8 +81,8 @@ MHSRestSigner.prototype.sign = function(opts, body) {
     md5.update(body, "utf8");
     md5 = md5.digest("base64");
     
-    opts['content-md5'] = md5;
-    opts['content-length'] = body.length;
+    opts.headers['content-md5'] = md5;
+    opts.headers['content-length'] = body.length;
   }
   
 	var
